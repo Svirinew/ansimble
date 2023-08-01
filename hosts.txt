@@ -1,0 +1,20 @@
+
+[stage_apps]
+prod-app ansible_host= ansible_ssh_private_key_file=/home/ubuntu/.ssh/ext_portal.pem
+prod-app2 ansible_host= ansible_ssh_private_key_file=/home/ubuntu/.ssh/ext_portal.pem
+prod-app3 ansible_host=  ansible_ssh_private_key_file=/home/ubuntu/.ssh/ext_portal.pem
+prod-app4 ansible_host= ansible_ssh_private_key_file=/home/ubuntu/.ssh/ext_portal.pem
+prod-app5 ansible_host= ansible_ssh_private_key_file=/home/ubuntu/.ssh/ext_portal.pem
+prod-app6 ansible_host= ansible_ssh_private_key_file=/home/ubuntu/.ssh/ext_portal.pem
+[dp_master]
+#
+#dark-pool-master ansible_host= ansible_ssh_private_key_file=/home/ubuntu/.ssh/test.pem(DP_staging).pem#
+
+
+[stage_apps:vars]
+ansible_user=ubuntu
+[kuber]
+#worker ansible_host= ansible_ssh_private_key_file=/home/ubuntu/.ssh/Sviri.pem
+#master ansible_host= ansible_ssh_private_key_file=/home/ubuntu/.ssh/Sviri.pem
+[kuber:vars]
+ansible_user=ubuntu
