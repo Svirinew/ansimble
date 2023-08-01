@@ -1,0 +1,45 @@
+---
+
+- name: my
+  hosts: all
+  become: yes
+#  vars:
+#    source_file: ./home/ubuntu/cp_stage
+#    destin_file: /app/
+  tasks:
+#  - name: cd /app/
+#    command: cd /app
+#  - name: ll
+#    shell: ll
+#    register: ll
+#  - debug:
+#      var: ll
+  - name:  restart runme
+    ansible.builtin.shell: /app/runme restart
+    args:
+      chdir: /app
+    register: restart
+  - debug:
+      var: restart
+#  - name: coppy folder
+#    copy: src={{ item }}  dest={{ destin_file }} mode=555
+#    with_fileglob: "{{ source_file }}/*.*" 
+#  - name: chmod -x
+#    command: chmod +x /app/runme
+#  - name: runtime start
+#    shell: ./runme init
+#  - name: wait 10 sec
+#    wait: 10sec
+#  - name: runme start
+#    shell: /app/runme start
+  - name: chek
+    shell: docker inspect cp-front | grep image
+    register: curlm
+  - debug:
+      var: curlm
+#  - name: chek 2 
+#    shell: docker inspect dp-client-server | grep image
+#  - debug:
+#      var: chek 2
+
+

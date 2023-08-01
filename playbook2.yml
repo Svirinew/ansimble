@@ -1,0 +1,12 @@
+
+---
+- name: Install default apache server
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: Install apache webservers
+    command: apt install -y  apache2
+#yum:  name=httpd state=latest
+  - name: Start apache and enable
+    service: name=apache state=started enabled=yes

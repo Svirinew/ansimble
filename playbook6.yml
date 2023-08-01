@@ -1,0 +1,18 @@
+
+---
+
+
+- name: my
+  hosts: all
+  become: yes
+  tasks:
+#  - name:  new config download
+#    ansible.builtin.shell: curl http://repo.darkpool.vip/nginx-front.conf -o /opt/darkpool/front/nginx.conf 
+#    register: doc
+#  - debug:
+#      var: doc
+  - name:  curl:300
+    ansible.builtin.shell: curl localhost:3000
+    register: curl
+  - debug:
+      var: curl

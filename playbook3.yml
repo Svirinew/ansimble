@@ -1,0 +1,23 @@
+---
+
+- name: my
+  hosts: all
+  become: yes
+  vars:
+    source_file: ./site/index.html
+    destin_file: /var/www/html
+
+  tasks:
+  - name: copy tohen
+    copy: src={{ source_file }} dest={{ destin_file }} mode=0555
+    notify: restart apache2
+  - name: chek acces
+    command: curl localhost
+  - name: PIng testing
+    command: ping -c 3 8.8.8.8
+    register: pingv
+  - debug:
+      var: pingv
+  handlers:
+  - name: restart apache2
+    service: name=apache2 state=restarted

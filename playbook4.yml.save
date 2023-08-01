@@ -1,0 +1,117 @@
+---
+
+- name: my
+  hosts: all
+  become: yes
+  vars:
+    source_file: /var/lib/docker/volumes/app_backend/_data/darkpool.db2
+    destin_file: /var/bac_dock/
+    source_file_config: /var/lib/docker/volumes/app_yggdrasil/_data/white.conf
+    destin_file_config: /var/bac_config/
+
+
+  tasks:
+  - name: Create a directory if it does not exist dock
+    ansible.builtin.file:
+     path:  /var/bac_dock/
+     state: directory
+     mode: '0755'
+  - name: Create a directory if it does not exist config
+    ansible.builtin.file:
+     path:  /var/bac_config/
+     state: directory
+     mode: '0755'
+ # - name: runtime start
+ #   shell: ./runme init
+ # - name: wait 10 sec
+ #   wait: 10sec
+#strart after
+  - name:  stop runme
+    ansible.builtin.shell: /app/runme stop
+    args:
+      chdir: /app
+    register: restart
+  - debug:
+      var: restart
+#  - name: Copy file with owner and permissions
+#    ansible.builtin.copy:
+#     src: //darkpool.db2
+#     dest: /var/bac_config/
+#     owner: ubuntu
+#     group: ubuntu
+#     mode: '0644'
+#  handlers:
+#  - name: mkdir
+#    command: mkdir:
+#  tasks:
+  - name: cp
+    command:  cp {{ source_file }} {{ destin_file }}
+
+  - name: cpconf
+    command:  cp {{ source_file_config }} {{ destin_file_config }}
+
+#  tasks:
+#  - name: mkdir config
+#    command:  mkdir /var/bac_config/
+
+#  - name: ll
+#    shell: ll
+#    register: ll
+#  - debug:
+#      var: ll
+#  - name:  restart runme
+#    ansible.builtin.shell: /app/runme restart
+#    args:
+#      chdir: /app
+#    register: restart
+#  - debug:
+#      var: restart
+  - name: coppy darkpol
+    copy: src={{ item }}  dest=/dp_client/ mode=555
+    with_fileglob: "/home/ubuntu/dp-client/*.*"
+  - name:  restart runme
+    ansible.builtin.shell: /dp_client/install.sh
+    args:
+      chdir: /dp_client/
+
+  - name: darkpool init
+    ansible.builtin.shell: darkpool init
+    args:
+      chdir: /dp_client/
+
+  - name: cp
+    command:  cp /var/bac_dock/*.*  /opt/darkpool/backend/
+
+  - name: cp
+    command:  cp /var/bac_config/*.*  /opt/darkpool/yggdrasil/
+
+  - name:  darkpool start
+    ansible.builtin.shell: darkpool start
+    args:
+      chdir: /dp_client/
+
+
+
+
+#  - name: coppy  config
+#    copy: src={{ item }}  dest={{ destin_file_config }} mode=555
+#    with_fileglob: "{{ source_file_config }}/*.*"
+#  - name: chmod -x
+#    command: chmod +x /app/runme
+#  - name: runtime start
+#    shell: ./runme init
+#  - name: wait 10 sec
+#    wait: 10sec
+#  - name: runme start
+#    shell: /app/runme start
+#  - name: chek
+#    shell: docker inspect cp-front | grep image
+#    register: curlm
+#  - debug:
+#      var: curlm
+#  - name: chek 2 
+#    shell: docker inspect dp-client-server | grep image
+#  - debug:
+#      var: chek 2
+
+

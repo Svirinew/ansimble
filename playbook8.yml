@@ -1,0 +1,22 @@
+#echo REPO="stagerepo.darkpool.vip" >> /etc/darkpool/darkpool.conf
+---
+
+
+- name: my
+  hosts: all
+  become: yes
+  tasks:
+  - name:  restart darkpool
+#    ansible.builtin.shell:  REPO="stagerepo.darkpool.vip" 
+    lineinfile:
+      path: /etc/darkpool/darkpool.conf
+      line: 'REPO="stagerepo.darkpool.vip"'
+    register: doc
+  - debug:
+      var: doc
+######
+#  - name:  update
+#    ansible.builtin.shell: bash ./update.sh
+#    register: curl
+#  - debug:
+#      var: curl

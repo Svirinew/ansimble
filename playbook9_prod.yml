@@ -1,0 +1,46 @@
+#echo REPO="stagerepo.darkpool.vip" >> /etc/darkpool/darkpool.conf
+---
+
+
+- name: my
+  hosts: all
+  become: yes
+  tasks:
+#  - name:  restart darkpool
+##    ansible.builtin.shell:  REPO="stagerepo.darkpool.vip" 
+#    lineinfile:
+#      path: /etc/darkpool/darkpool.conf
+#      line: 'REPO="stagerepo.darkpool.vip"'
+#    register: doc
+#  - debug:
+#      var: doc
+######
+  - name:  remove old dockers
+    ansible.builtin.shell: docker ps -aq | xargs docker stop | xargs docker rm
+    register: docker
+  - debug:
+      var: docker
+  - name:  download instaler
+    ansible.builtin.shell: curl -fsSL https://repo.darkpool.vip/install.sh -o install.sh
+    register: curl
+  - debug:
+      var: curl
+  - name:  install app
+    ansible.builtin.shell:  bash ./install.sh
+    register: install
+  - debug:
+      var: install
+  - name:  init
+    ansible.builtin.shell: darkpool init
+    register: init
+  - debug:
+      var: init
+  - name:  darkpool
+    ansible.builtin.shell: darkpool start
+    register: start
+  - debug:
+      var: start
+
+
+
+
